@@ -1,6 +1,7 @@
-﻿{
+{
     "files.exclude":
     {
+        "**/*.csproj":true,
         "**/.DS_Store":true,
         "**/.git":true,
         "**/.gitmodules":true,
