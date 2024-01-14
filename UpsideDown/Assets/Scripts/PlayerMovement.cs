@@ -1,37 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 0.5f;
-    [SerializeField] float jumpForce = 15f;
-    public Rigidbody2D rb;
+
+    [SerializeField] float moveSpeed = 15f;
+    [SerializeField] float jumpForce = 3f;
+
+    private InputManager inputManager;
+    private Rigidbody2D rb;
     private BoxCollider2D boxCollider2d;
     [SerializeField] private LayerMask platformsLayerMask;
 
-    void Awake()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider2d = GetComponent<BoxCollider2D>();
     }
 
-
-    // Update is called once per frame (fixed cus physics)
-    void FixedUpdate()
+    private void OnEnable()
     {
-        transform.position += new Vector3(Input.GetAxis("Horizontal") * moveSpeed, 0, 0);
+        inputManager = FindObjectOfType<InputManager>();
+        inputManager.OnJumpTriggered += Jump;
     }
 
-    private void Update()
+    private void OnDisable()
+    {
+        inputManager.OnJumpTriggered -= Jump;
+    }
+
+
+    // Update is called once per frame (fixed cus physics)
+    void Update()
+    {
+        transform.position += new Vector3(inputManager.GetMovementDirection() * Time.deltaTime * moveSpeed, 0, 0);
+    }
+
+    private void Jump()
     {
         if (IsGrounded())
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                Debug.Log("Jump");
-            }
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
     }
 

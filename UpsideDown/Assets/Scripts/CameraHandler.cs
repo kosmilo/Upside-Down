@@ -6,6 +6,7 @@ public class CameraHandler : MonoBehaviour
 {
     [SerializeField] Camera cam_1;
     [SerializeField] Camera cam_2;
+
     void Awake()
     {
         cam_1.enabled = true;
