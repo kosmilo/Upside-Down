@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
 {
     private PlayerInputActions playerInputActions;
     public event Action OnJumpTriggered;
+    public event Action OnJumpCanceled;
     private InputManager instance;
 
     private void Awake()
@@ -26,11 +27,19 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Enable();
 
         playerInputActions.Player.Jump.performed += JumpPerformed;
+        playerInputActions.Player.Jump.canceled += JumpCanceled;
     }
 
     public void JumpPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump performed");
         OnJumpTriggered?.Invoke();
+    }
+
+    public void JumpCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("Jump canceled");
+        OnJumpCanceled?.Invoke();
     }
 
     public float GetMovementDirection()

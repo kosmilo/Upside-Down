@@ -1,13 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
 
-    [SerializeField] float moveSpeed = 15f;
-    [SerializeField] float jumpForce = 3f;
+    [SerializeField] private float moveSpeed = 9f;
+    [SerializeField] private float jumpForce = 9f;
+    [SerializeField] private float jumpTime = 0.1f;
+    [SerializeField] private float jumpTimer;
+    private bool isJumping = false;
+    private float xVelocity;
+    private float yVelocity;
 
     private InputManager inputManager;
     private Rigidbody2D rb;
@@ -23,39 +31,68 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         inputManager = FindObjectOfType<InputManager>();
-        inputManager.OnJumpTriggered += Jump;
+        inputManager.OnJumpTriggered += StartJump;
+        inputManager.OnJumpCanceled += StopJump;
     }
 
     private void OnDisable()
     {
-        inputManager.OnJumpTriggered -= Jump;
+        inputManager.OnJumpTriggered -= StartJump;
     }
 
-
-    // Update is called once per frame (fixed cus physics)
-    void Update()
+    private void Update()
     {
-        transform.position += new Vector3(inputManager.GetMovementDirection() * Time.deltaTime * moveSpeed, 0, 0);
+        if (isJumping)
+        {
+            jumpTimer += Time.deltaTime;
+            if (jumpTimer >= jumpTime)
+            {
+                StopJump();
+            }
+        }
     }
 
-    private void Jump()
+    void FixedUpdate()
+    {
+        Move();
+
+        yVelocity = isJumping ? jumpForce * Mathf.Clamp(rb.gravityScale, -1, 1) : rb.velocity.y;
+
+        rb.velocity = new Vector3(xVelocity, yVelocity, 0);
+    }
+
+    private void Move()
+    {
+        float moveDir = inputManager.GetMovementDirection();
+        xVelocity = Mathf.Lerp(xVelocity, moveDir * moveSpeed, 0.3f);
+    }
+
+    private void StartJump()
     {
         if (IsGrounded())
         {
-            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            isJumping = true;
+            jumpTimer = 0f;
+        }
+    }
+
+    private void StopJump()
+    {
+        if (isJumping)
+        {
+            isJumping = false;
+            yVelocity = 0;
         }
     }
 
     private bool IsGrounded()
     {
-        RaycastHit2D raycastHit2d = Physics2D.BoxCast(boxCollider2d.bounds.center, boxCollider2d.bounds.size, 0f, Vector2.down, rb.gravityScale * .1f, platformsLayerMask);
+        RaycastHit2D raycastHit2d = Physics2D.BoxCast(boxCollider2d.bounds.center, boxCollider2d.bounds.size, 0f, Vector2.up * -rb.gravityScale, 0.05f, platformsLayerMask);
         return raycastHit2d.collider != null;
     }
 
     public void GravitySwitch()
     {
-        Debug.Log("Gravity Switched");
         rb.gravityScale *= -1;
-        jumpForce *= -1;
     }
 }
