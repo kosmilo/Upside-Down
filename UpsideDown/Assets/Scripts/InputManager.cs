@@ -7,9 +7,10 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    private PlayerInputActions playerInputActions;
+    public PlayerInputActions playerInputActions { get; private set; }
     public event Action OnJumpTriggered;
     public event Action OnJumpCanceled;
+    public event Action OnPauseTriggered;
     private InputManager instance;
 
     private void Awake()
@@ -25,20 +26,20 @@ public class InputManager : MonoBehaviour
 
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
+        playerInputActions.UI.Enable();
 
         playerInputActions.Player.Jump.performed += JumpPerformed;
         playerInputActions.Player.Jump.canceled += JumpCanceled;
+        playerInputActions.UI.PauseGame.performed += PauseGame;
     }
 
     public void JumpPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump performed");
         OnJumpTriggered?.Invoke();
     }
 
     public void JumpCanceled(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump canceled");
         OnJumpCanceled?.Invoke();
     }
 
@@ -47,5 +48,9 @@ public class InputManager : MonoBehaviour
         float inputDir = playerInputActions.Player.Move.ReadValue<float>();
 
         return inputDir;
+    }
+
+    public void PauseGame(InputAction.CallbackContext context) {
+        OnPauseTriggered?.Invoke();
     }
 }

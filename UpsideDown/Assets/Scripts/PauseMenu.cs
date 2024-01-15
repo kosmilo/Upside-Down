@@ -2,51 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] public GameObject pauseMenu;
-    [SerializeField] public GameObject pauseButton;
+    [SerializeField] public GameObject firstButton;
+    private InputManager inputManager;
     public bool isGamePaused;
 
-    private void Start()
+    private void OnEnable()
     {
+        inputManager = FindObjectOfType<InputManager>();
+        inputManager.OnPauseTriggered += TogglePauseState;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isGamePaused = false;
     }
 
+    private void OnDisable() {
+        inputManager.OnPauseTriggered -= TogglePauseState;
+    }
 
-    // Update is called once per frame
-    void Update()
+    private void TogglePauseState()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        Debug.Log("Toggled");
+        if (isGamePaused)
         {
-            Debug.Log("Pause game");
-            if (isGamePaused)
-            {
-                ResumeGame();
-            } 
-            else
-            {
-                PauseGame();
-            }
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
         }
     }
 
     public void ResumeGame()
     {
+        inputManager.playerInputActions.Player.Enable();
         pauseMenu.SetActive(false);
-        pauseButton.SetActive(true);
         Time.timeScale = 1f;
         isGamePaused = false;
     }
     public void PauseGame()
     {
+        FindObjectOfType<EventSystem>().SetSelectedGameObject(firstButton);
         pauseMenu.SetActive(true);
-        pauseButton.SetActive(false);
         Time.timeScale = 0f;
+        inputManager.playerInputActions.Player.Disable();
         isGamePaused = true;
     }
     public void RestartLevel()
