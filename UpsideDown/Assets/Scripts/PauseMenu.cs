@@ -21,13 +21,13 @@ public class PauseMenu : MonoBehaviour
         isGamePaused = false;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         inputManager.OnPauseTriggered -= TogglePauseState;
     }
 
     private void TogglePauseState()
     {
-        Debug.Log("Toggled");
         if (isGamePaused)
         {
             ResumeGame();

@@ -11,9 +11,9 @@ public class InputManager : MonoBehaviour
     public event Action OnJumpTriggered;
     public event Action OnJumpCanceled;
     public event Action OnPauseTriggered;
-    private InputManager instance;
+    public static InputManager instance;
 
-    private void Awake()
+    private void Start()
     {
         if (instance != null && instance != this)
         {
@@ -50,7 +50,8 @@ public class InputManager : MonoBehaviour
         return inputDir;
     }
 
-    public void PauseGame(InputAction.CallbackContext context) {
+    public void PauseGame(InputAction.CallbackContext context)
+    {
         OnPauseTriggered?.Invoke();
     }
 }

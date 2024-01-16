@@ -90,9 +90,4 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D raycastHit2d = Physics2D.BoxCast(boxCollider2d.bounds.center, boxCollider2d.bounds.size, 0f, Vector2.up * -rb.gravityScale, 0.05f, platformsLayerMask);
         return raycastHit2d.collider != null;
     }
-
-    public void GravitySwitch()
-    {
-        rb.gravityScale *= -1;
-    }
 }

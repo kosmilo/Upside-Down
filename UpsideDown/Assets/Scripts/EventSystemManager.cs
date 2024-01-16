@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EventSystemManager : MonoBehaviour
 {
     public static EventSystemManager eventSystemInstance;
 
-    private void Awake() {
+    private void Awake()
+    {
         if (eventSystemInstance != null && eventSystemInstance != this)
         {
             Destroy(gameObject);
