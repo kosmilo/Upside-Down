@@ -44,12 +44,15 @@ TagManager:
   - name: Text
     uniqueID: 3152395567
     locked: 0
-  - name: Trigger Platforms
-    uniqueID: 3218171705
-    locked: 0
-  - name: Objects and extras
+  - name: Objects
     uniqueID: 3826328565
     locked: 0
-  - name: Basic Platforms
+  - name: Terrain
     uniqueID: 1696733765
+    locked: 0
+  - name: Extras
+    uniqueID: 4186216513
+    locked: 0
+  - name: Triggers
+    uniqueID: 3218171705
     locked: 0
