@@ -5,27 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class SceneHandler : MonoBehaviour
 {
-    public void StartGame()
+    [SerializeField] private Animator fadeAnimator;
+
+    private void Start()
     {
-        SceneManager.LoadScene(1);
+        if (fadeAnimator == null)
+        {
+            fadeAnimator = GameObject.FindWithTag("SceneFade").GetComponent<Animator>();
+        }
     }
 
-    public void NextScene()
+    public void Play()
     {
+        StartCoroutine(LoadScene(1));
     }
 
     public void PreviousScene()
     {
-        SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex - 1);
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex - 1));
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void NextScene()
     {
-        NextScene();
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        StartCoroutine(LoadScene(0));
+    }
+
+    private IEnumerator LoadScene(int sceneIndex)
+    {
+        fadeAnimator.Play("FadeOut");
+        yield return new WaitForSeconds(0.75f);
+        SceneManager.LoadScene(sceneIndex);
     }
 }

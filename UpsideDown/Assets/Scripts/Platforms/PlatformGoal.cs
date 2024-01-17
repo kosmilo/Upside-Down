@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(SceneHandler))]
 public class PlatformGoal : Platform
 {
+    SceneHandler sceneHandler;
+
+    private void Start()
+    {
+        sceneHandler = GetComponent<SceneHandler>();
+    }
+
     private void OnEnable()
     {
         OnActivate += FinishLevel;
@@ -14,7 +21,7 @@ public class PlatformGoal : Platform
     {
         if (obj.name == "Player")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            sceneHandler.NextScene();
         }
     }
 }

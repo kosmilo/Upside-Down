@@ -460,6 +460,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5109546080415969831, guid: e49ae5d0b71e9004284b34472432b1e4, type: 3}
+      propertyPath: m_TagString
+      value: SceneFade
+      objectReference: {fileID: 0}
     - target: {fileID: 7600822771651646299, guid: e49ae5d0b71e9004284b34472432b1e4, type: 3}
       propertyPath: m_Name
       value: PauseMenuCanvas
@@ -553,6 +557,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e49ae5d0b71e9004284b34472432b1e4, type: 3}
+--- !u!95 &1193893742 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7819447958706354528, guid: e49ae5d0b71e9004284b34472432b1e4, type: 3}
+  m_PrefabInstance: {fileID: 1193893741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1934681937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7926133097894005476, guid: 3d4a1c46d16d1824f966a19b34a5b250, type: 3}
@@ -55802,6 +55811,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6366406787953509296}
     m_Modifications:
+    - target: {fileID: 3719632786022244775, guid: 365f86673e7cdf140b89ec74927ef2b5, type: 3}
+      propertyPath: fadeAnimator
+      value: 
+      objectReference: {fileID: 1193893742}
     - target: {fileID: 6476879266908905239, guid: 365f86673e7cdf140b89ec74927ef2b5, type: 3}
       propertyPath: m_RootOrder
       value: 1
