@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   jumpForce: 8.5
-  jumpTime: 0.15
+  jumpTime: 0.19
   jumpTimer: 0
   platformsLayerMask:
     serializedVersion: 2
